@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.log
+.vscode/
+.idea/
+dist/
+build/
+reports/
+*.nmap
+*.xml
+.env
