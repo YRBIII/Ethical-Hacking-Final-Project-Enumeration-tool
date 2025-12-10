@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 import socket
 
 from .result_objects import HostResult
@@ -68,7 +68,12 @@ class WindowsEnumerator:
             )
 
             # Store detailed enumeration results under a dedicated key
-            host.scripts.setdefault(
+            scripts_obj = getattr(host, "scripts", None)
+            if scripts_obj is None or not isinstance(scripts_obj, dict):
+                scripts_obj = {}
+                setattr(host, "scripts", scripts_obj)
+
+            scripts_obj.setdefault(
                 "sonartrace-windows-enum",
                 "\n".join(enum_notes),
             )
@@ -104,7 +109,7 @@ class WindowsEnumerator:
 
         return sorted(set(smb_ports))
 
-    def _probe_smb_port(self, ip: str, port: int) -> (str, str):
+    def _probe_smb_port(self, ip: str, port: int) -> Tuple[str, str]:
         """Attempt a real TCP connection to an SMB/NetBIOS port.
 
         Returns:
