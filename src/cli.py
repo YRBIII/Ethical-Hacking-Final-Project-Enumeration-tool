@@ -3,7 +3,7 @@ import ipaddress
 import platform
 import subprocess
 import re
-from typing import List
+from typing import List, Optional
 
 from .nmap_handler import NmapHandler, NmapExecutionError
 from .nmap_parser import NmapParser
@@ -16,7 +16,7 @@ ASCII_BANNER = r"""
   _________                       ___________                     
  /   _____/ ____   ____   ____   \__    ___/______   ____   ______
  \_____  \\_/ __ \\_/ __ \\_/ __ \\    |    |  \_  __ \\_/ __ \\ /  ___/
- /        \\  ___/\\  ___/\\  ___/    |    |   |  | \\  ___/ \\___ \\ 
+/        \\  ___/\\  ___/\\  ___/    |    |   |  | \\  ___/ \\___ \\ 
 /_______  / \\___  >\\___  >\\___  >   |____|   |__|   \\___  >____  >
         \\/      \\/     \\/     \\/                         \\/     \\/ 
 
@@ -59,15 +59,15 @@ def _validate_targets(targets: List[str], allow_dns: bool) -> None:
 
 
 # ---------------------------------------------------------------------------
-# NEW: DNS resolver detection + confirmation (assignment requirement)
+# DNS resolver detection + confirmation (assignment requirement)
 # ---------------------------------------------------------------------------
-def _detect_system_dns_servers() -> list[str]:
+def _detect_system_dns_servers() -> List[str]:
     """Best-effort detection of system DNS resolver(s).
 
     Linux/macOS: parses /etc/resolv.conf
     Windows: parses 'ipconfig /all' output for 'DNS Servers'
     """
-    servers: list[str] = []
+    servers: List[str] = []
 
     try:
         system = platform.system().lower()
@@ -122,7 +122,7 @@ def _detect_system_dns_servers() -> list[str]:
 
     # De-duplicate while preserving order
     seen = set()
-    deduped: list[str] = []
+    deduped: List[str] = []
     for s in servers:
         if s not in seen:
             seen.add(s)
@@ -206,7 +206,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     return p
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: Optional[List[str]] = None) -> None:
     print(ASCII_BANNER)
     parser = _build_arg_parser()
     args = parser.parse_args(argv)
@@ -215,7 +215,7 @@ def main(argv: list[str] | None = None) -> None:
     print("[!] Use this tool ONLY against hosts and networks you are explicitly authorized to test.")
     print("[!] The authors take no responsibility for misuse.\n")
 
-    # NEW: DNS Safety Check – detect resolver(s) and ask user to confirm
+    # DNS Safety Check – detect resolver(s) and ask user to confirm
     _dns_safety_prompt()
 
     # Existing target validation (CIDR breadth + hostname safety)
