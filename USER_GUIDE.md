@@ -84,7 +84,7 @@ This prevents accidental scans caused by DNS misconfiguration.
 By default, SonarTrace creates reports using:
 
 ```
-sonartrace_report_YYYYMMDD_HHMM_UTC.md
+host_enumeration_report_YYYYMMDD_HHMM_UTC.md
 ```
 
 To specify your own filename:

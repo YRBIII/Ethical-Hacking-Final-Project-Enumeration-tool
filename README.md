@@ -209,7 +209,7 @@ optional arguments:
   -o OUTPUT, --output OUTPUT
                         Use a custom output report filename/path (.md).
                         Default name:
-                        sonartrace_report_YYYYMMDD_HHMM_UTC.md
+                        host_enumeration_report_YYYYMMDD_HHMM_UTC.md
 
   --utc-timestamp       Include UTC timestamp metadata inside the report.
                         Enabled by default for filename generation.
