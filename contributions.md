@@ -15,6 +15,7 @@ I configured the target parser, CIDR handling (Classless Inter-Domain Routing), 
 * `targets.py`
 * `utils.py`
 * `enumerator.py`
+* `nmap_handler.py`
 * `__main__.py`
 * `exceptions.py`
 * `logger_setup.py`
